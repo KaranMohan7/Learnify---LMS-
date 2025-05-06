@@ -36,7 +36,7 @@ const allowedOrigins = [
   app.use(express.urlencoded({extended: true}))
 
   app.use("/user", userRouter)
-  app.post("/clerk", express.raw({ type: "*/*" }), clerkwebhooks)
+  app.post("/clerk", clerkwebhooks)
 
 
 app.listen(PORT, () => {

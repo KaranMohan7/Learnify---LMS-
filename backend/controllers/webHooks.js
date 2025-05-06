@@ -42,6 +42,9 @@ const clerkwebhooks = async(req,res) => {
                break;
             }
 
+            default: 
+              break;
+
            }
 
     } catch (error) {
