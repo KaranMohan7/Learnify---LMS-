@@ -35,7 +35,6 @@ const allowedOrigins = [
   app.use(express.json())
   app.use(express.urlencoded({extended: true}))
 
-
   app.use("/user", userRouter)
   app.post("/clerk", clerkwebhooks)
 
