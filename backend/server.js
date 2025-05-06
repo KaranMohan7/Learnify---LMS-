@@ -32,12 +32,12 @@ const allowedOrigins = [
   }))
 
   app.use(cookieParser())
-  app.use("/user", userRouter)
-  app.post("/clerk", express.raw({ type: "*/*" }), clerkwebhooks)
-
   app.use(express.json())
   app.use(express.urlencoded({extended: true}))
 
+
+  app.use("/user", userRouter)
+  app.post("/clerk", clerkwebhooks)
 
 app.listen(PORT, () => {
     console.log("server started successfully")
