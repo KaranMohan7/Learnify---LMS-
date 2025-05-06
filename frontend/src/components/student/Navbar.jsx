@@ -1,0 +1,65 @@
+import React, { useContext } from "react";
+import { assets } from "../../assets/assets/assets";
+import { FaRegCircleUser } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import {
+  useClerk,
+  UserButton,
+  useUser,
+} from "@clerk/clerk-react";
+import { appcontext } from "../../context/Appcontext";
+
+const Navbar = () => {
+
+  const { openSignIn } = useClerk();
+  const { user } = useUser();
+  const { iseducator } = useContext(appcontext)
+
+  return (
+    <div className="w-full py-3 md:py-4 lg:py-5 flex items-center justify-between px-1 md:px-6 lg:px-16 border-b-[1px] border-zinc-700">
+      <Link to={'/'}>
+        <img
+          src={assets.logo}
+          className="w-36 md:w-40 lg:w-40 "
+        />
+      </Link>
+      <div className="font-semibold flex items-center gap-1 md:gap-3 lg:gap-4">
+        <div className=" text-xs md:text-[16px] lg:text-[16px] cursor-pointer">
+          {user && (
+            <div className="flex items-center gap-0 md:gap-2 lg:gap-2 ">
+              <p>{iseducator ? 'Educator Dashboard' : 'Become Educator |'}</p>
+              <Link to={'/my-enrollments'}>My Enrollments</Link>
+            </div>
+          )}
+          {user ? null : (
+            <button
+              onClick={() => openSignIn()}
+              className="block md:hidden lg:hidden"
+            >
+              <FaRegCircleUser size={30} />
+            </button>
+          )}
+        </div>
+        {user ? (
+           <UserButton appearance={{
+            elements: {
+              userButtonAvatarBox: {
+                width: "2.3rem",   
+                height: "2.3rem",
+              },
+            },
+          }}/>
+        ) : (
+          <button
+            onClick={() => openSignIn()}
+            className="bg-blue-800 text-white font-semibold px-4 py-2 rounded-md hidden md:block lg:block transition-all duration-300 hover:bg-blue-900"
+          >
+            Create Account
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Navbar;
