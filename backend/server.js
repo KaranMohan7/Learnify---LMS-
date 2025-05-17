@@ -5,7 +5,9 @@ import cookieParser from 'cookie-parser'
 import connectDB from './config/mongodb.js';
 import connectCloudinary from './config/cloudinary.js';
 import userRouter from './routes/userRouter.js'
-import { clerkwebhooks } from './controllers/webHooks.js';
+import educatorRouter from './routes/educatorRouter.js'
+import { clerkwebhooks, stripewebhook } from './controllers/webHooks.js';
+import { clerkMiddleware } from '@clerk/express';
 
 
 const app = express();
@@ -30,13 +32,16 @@ const allowedOrigins = [
     },
     credentials: true
   }))
+  app.use(clerkMiddleware())
 
   app.use(cookieParser())
   app.use(express.json())
   app.use(express.urlencoded({extended: true}))
 
   app.use("/user", userRouter)
+  app.use("/educator", educatorRouter)
   app.post("/clerk", clerkwebhooks)
+  app.post("/stripe", express.raw({type: 'application/json'}) ,stripewebhook)
 
 app.listen(PORT, () => {
     console.log("server started successfully")

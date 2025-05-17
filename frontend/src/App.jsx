@@ -34,7 +34,7 @@ const App = () => {
                  {/* all the educator routes  */}
         <Route path='/educator' element={<Educator />} >
         <Route index element={<Dashboard />} />
-        <Route path='add-course' element={<Addcourse />} />
+        <Route path='add-courses' element={<Addcourse />} />
         <Route path='enrolled-students' element={<Enrolledstudents />} />
         <Route path='my-courses' element={<Mycourses />} />
         </Route>

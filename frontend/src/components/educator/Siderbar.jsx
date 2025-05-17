@@ -14,19 +14,19 @@ const Siderbar = () => {
           <p className="text-sm hidden md:block lg:block lg:text-[16px] hover:text-green-600 transition-all duration-200">Dashboard</p>
         </div>
       </Link>
-      <Link to={'add-course'} >
+      <Link to={'/educator/add-courses'} >
         <div className="flex items-center gap-4 lg:gap-10  w-full  px-5 md:px-2 lg:px-7">
         <IoAddCircleOutline size={24} />
         <p className="text-sm hidden md:block lg:block lg:text-[16px] hover:text-green-600 transition-all duration-200 ">Add Course</p>
         </div>
       </Link>
-      <Link to={'my-courses'}>
+      <Link to={'/educator/my-courses'}>
         <div className="flex items-center  gap-4 lg:gap-10 w-full px-5 md:px-2 lg:px-7 ">
         <BsFillJournalBookmarkFill size={24} />
         <p className="text-sm  hidden md:block lg:block lg:text-[16px] hover:text-green-600 transition-all duration-200">My Courses</p>
         </div>
       </Link>
-      <Link to={'enrolled-students'}>
+      <Link to={'/educator/enrolled-students'}>
         <div className="flex items-center  gap-4 lg:gap-10 w-full  px-5 md:px-2 lg:px-7 ">
         <ImProfile size={24} />
         <p className="text-sm hidden md:block lg:block lg:text-[16px] text-nowrap hover:text-green-600 transition-all duration-200" >Students Enrolled</p>

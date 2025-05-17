@@ -5,7 +5,9 @@ import humanizeDuration from "humanize-duration";
 export const appcontext = createContext();
 
 const Appcontext = ({ children }) => {
+
   const currency = import.meta.env.VITE_CURRENCY;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [allcourses, setallcourses] = useState([]);
   const [iseducator, setiseducator] = useState(false);
   const [enrolledcourses,setenrolledcourses] = useState([])
@@ -68,8 +70,8 @@ const Appcontext = ({ children }) => {
     calculateCourseduration, 
     calculatelectureno,
     getenrolledcourses,
-    enrolledcourses
-    
+    enrolledcourses,
+    backendUrl
   };
 
   return (
