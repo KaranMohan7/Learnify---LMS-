@@ -1,4 +1,5 @@
 import courseModel from "../models/courseModel.js";
+import progressModel from "../models/progressModel.js";
 import purchaseModel from "../models/purchaseModel.js";
 import userModel from "../models/userModel.js";
 import Stripe from 'stripe'
@@ -109,4 +110,72 @@ const enrollcourse = async(req,res) => {
     }
 }
 
-export { getallcourses, getcoursebyId, userenrollments, getuserdata, enrollcourse }
+const updatecourseProgress = async(req,res) => {
+    try {
+         const userId = req.auth.userId;
+         const {id, lectureId} = req.body
+         const progress = await progressModel.findOne({userId, courseId:id})
+         if(progress){
+             if(progress.lectureCompleted.includes(lectureId)){
+                return res.status(200).json({success: true, message: "Lecture already present"})
+             }
+             progress.lectureCompleted.push(lectureId)
+             await progress.save()
+         }else{
+               await progressModel.create({
+                userId,
+                courseId: id,
+                lectureCompleted : [lectureId]
+            })
+         }
+         res.json({success: true, message: "Progress updated Successfully"})
+
+    } catch (error) {
+          res.status(400).json({ success: false, message: error.message });
+    }
+}
+
+const getuserProgress = async(req,res) => {
+    try {
+          const userId = req.auth.userId;
+         const {id} = req.body
+         const progress = await progressModel.findOne({userId, courseId:id})
+         if(!progress) return res.status(404).json({success: false, message: "progress not found"})
+         res.status(200).json({success: true, progress})   
+    } catch (error) {
+         res.status(400).json({ success: false, message: error.message });
+    }
+}
+
+const rateCourse = async(req,res) => {
+    try {
+         const userId = req.auth.userId;
+         const {id, rating} = req.body
+         if(!id || !userId || !rating || rating < 1 || rating > 5){
+            return res.status(400).json({success: false, message: "Invalid Details"})
+         }
+
+         const course = await courseModel.findOne({_id: id})
+         if(!course) return res.status(404).json({success: false, message: "Course Not found"})
+         const user = await userModel.findOne({clerkId: userId})
+         if(!user) return res.status(404).json({success: false, message: "user Not found"})
+
+         if(!user.enrolledcourses.includes(id)){
+            return res.status(404).json({success: false, message: "cant rate this course"})
+         }   
+
+         const existingRate = course.courseRatings.findIndex(c => c.userid === userId)
+         if(existingRate > -1){
+            course.courseRatings[existingRate].rating = rating
+         }else{
+            course.courseRatings.push({userid: userId, rating}) 
+         }
+         await course.save()
+         res.status(200).json({success: true, message: "Ratings updated"})
+      
+    } catch (error) {
+         res.status(400).json({ success: false, message: error.message });
+    }
+}
+
+export { getallcourses, getcoursebyId, userenrollments, getuserdata, enrollcourse, updatecourseProgress, getuserProgress, rateCourse}
