@@ -191,7 +191,7 @@ export const dummyStudentEnrolled = [
 export const dummyCourses = [
     {
         "_id": "605c72efb3f1c2b1f8e4e1a1",
-        "courseTitle": "Introduction to JavaScript",
+        "courseTitle": "Java & DSA Course for Placement",
         "courseDescription": "<h2>Learn the Basics of JavaScript</h2><p>JavaScript is a versatile programming language that powers the web. In this course, you will learn the fundamentals of JavaScript, including syntax, data types, and control structures.</p><p>This course is perfect for beginners who want to start their journey in web development. By the end of this course, you will be able to create interactive web pages and understand the core concepts of JavaScript.</p><ul><li>Understand the basics of programming</li><li>Learn how to manipulate the DOM</li><li>Create dynamic web applications</li></ul>",
         "coursePrice": 49.99,
         "isPublished": true,
@@ -200,21 +200,21 @@ export const dummyCourses = [
             {
                 "chapterId": "chapter1",
                 "chapterOrder": 1,
-                "chapterTitle": "Getting Started with JavaScript",
+                "chapterTitle": "Getting Started with Java",
                 "chapterContent": [
                     {
                         "lectureId": "lecture1",
-                        "lectureTitle": "What is JavaScript?",
+                        "lectureTitle": "Introduction to java language",
                         "lectureDuration": 16,
-                        "lectureUrl": "https://youtu.be/CBWnBi-awSA",
+                        "lectureUrl": "https://youtu.be/yRpLlJmRo2w?si=V4NZE366lCOtE2kT",
                         "isPreviewFree": true,
                         "lectureOrder": 1
                     },
                     {
                         "lectureId": "lecture2",
-                        "lectureTitle": "Setting Up Your Environment",
+                        "lectureTitle": "Variables in Java | Input Output",
                         "lectureDuration": 19,
-                        "lectureUrl": "https://youtu.be/4l87c2aeB4I",
+                        "lectureUrl": "https://youtu.be/LusTv0RlnSU?si=aBpk1-hYagTdZpdW",
                         "isPreviewFree": false,
                         "lectureOrder": 2
                     }
@@ -223,21 +223,21 @@ export const dummyCourses = [
             {
                 "chapterId": "chapter2",
                 "chapterOrder": 2,
-                "chapterTitle": "Variables and Data Types",
+                "chapterTitle": "Going Further",
                 "chapterContent": [
                     {
                         "lectureId": "lecture3",
-                        "lectureTitle": "Understanding Variables",
+                        "lectureTitle": "Conditional Statements | If-else, Switch Break",
                         "lectureDuration": 20,
-                        "lectureUrl": "https://youtu.be/pZQeBJsGoDQ",
+                        "lectureUrl": "https://youtu.be/I5srDu75h_M?si=gCvoksm55EeFaHIq",
                         "isPreviewFree": true,
                         "lectureOrder": 1
                     },
                     {
                         "lectureId": "lecture4",
-                        "lectureTitle": "Data Types in JavaScript",
+                        "lectureTitle": "Loops in Java",
                         "lectureDuration": 10,
-                        "lectureUrl": "https://youtu.be/ufHT2WEkkC4",
+                        "lectureUrl": "https://youtu.be/0r1SfRoLuzU?si=esryxeWoPk_vWPiD",
                         "isPreviewFree": false,
                         "lectureOrder": 2
                     }
@@ -273,21 +273,21 @@ export const dummyCourses = [
             {
                 "chapterId": "chapter1",
                 "chapterOrder": 1,
-                "chapterTitle": "Advanced Data Structures",
+                "chapterTitle": "Getting Started",
                 "chapterContent": [
                     {
                         "lectureId": " lecture1",
-                        "lectureTitle": "Lists and Tuples",
+                        "lectureTitle": "Python for Beginners | Intro",
                         "lectureDuration": 720,
-                        "lectureUrl": "https://youtu.be/HdLIMoQkXFA",
+                        "lectureUrl": "https://youtu.be/QXeEoD0pB3E?si=BIfWUuYlPkhY-c-Z",
                         "isPreviewFree": true,
                         "lectureOrder": 1
                     },
                     {
                         "lectureId": "lecture2",
-                        "lectureTitle": "Dictionaries and Sets",
+                        "lectureTitle": " Introduction to Python",
                         "lectureDuration": 850,
-                        "lectureUrl": "https://youtu.be/HdLIMoQkXFA",
+                        "lectureUrl": "https://youtu.be/hEgO047GxaQ?si=yZRmk-3BLbNRz7SO",
                         "isPreviewFree": false,
                         "lectureOrder": 2
                     }
@@ -296,21 +296,21 @@ export const dummyCourses = [
             {
                 "chapterId": "chapter2",
                 "chapterOrder": 2,
-                "chapterTitle": "Object-Oriented Programming",
+                "chapterTitle": "Lets go Practical",
                 "chapterContent": [
                     {
                         "lectureId": "lecture3",
-                        "lectureTitle": "Classes and Objects",
+                        "lectureTitle": "Python Installation | PyCharm",
                         "lectureDuration": 900,
-                        "lectureUrl": "https://youtu.be/HdLIMoQkXFA",
+                        "lectureUrl": "https://youtu.be/CScxy0294SE?si=7IPi_XUhE9eLElmX",
                         "isPreviewFree": true,
                         "lectureOrder": 1
                     },
                     {
                         "lectureId": "lecture4",
-                        "lectureTitle": "Inheritance and Polymorphism",
+                        "lectureTitle": "Variables in Python",
                         "lectureDuration": 950,
-                        "lectureUrl": "https://youtu.be/HdLIMoQkXFA",
+                        "lectureUrl": "https://youtu.be/TqPzwenhMj0?si=g3t-cGpd7Dz1QI8q",
                         "isPreviewFree": false,
                         "lectureOrder": 2
                     }

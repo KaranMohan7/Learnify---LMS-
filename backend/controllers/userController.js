@@ -18,7 +18,7 @@ const getuserdata = async(req,res) => {
 
 const getallcourses = async(req,res) => {
     try {
-        const allcourses = await courseModel.find().select('-courseContent', '-enrolledStudents').populate({path: 'educator', select: "name"})
+        const allcourses = await courseModel.find().select('-courseContent -enrolledStudents').populate({path: 'educator', select: "name"})
         if(!allcourses) return res.status(404).json({success: false, message: "Courses not found"})
         res.status(200).json({success: true, allcourses})
     } catch (error) {

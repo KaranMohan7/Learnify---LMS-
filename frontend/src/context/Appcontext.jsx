@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { assets, dummyCourses } from "../assets/assets/assets";
 import humanizeDuration from "humanize-duration";
+import axios from "axios";
 
 export const appcontext = createContext();
 
@@ -13,7 +14,19 @@ const Appcontext = ({ children }) => {
   const [enrolledcourses,setenrolledcourses] = useState([])
 
   const getallcourses = async () => {
-    setallcourses(dummyCourses);
+    try {
+        const {data} = await axios.get(`${backendUrl}/user/getallcourses`, {
+          withCredentials: true
+        })
+        if(data.success){
+          console.log(data.allcourses)
+         setallcourses(data.allcourses);
+        }else{
+          console.log(data.message)
+        }
+    } catch (error) {
+       console.log(error.message)
+    }
   };
 
   const calculaterating = (item) => {

@@ -11,5 +11,4 @@ userRouter.post("/update-progress", updatecourseProgress)
 userRouter.post("/get-progress",getuserProgress)
 userRouter.post("/add-ratings", rateCourse)
 
-
 export default userRouter

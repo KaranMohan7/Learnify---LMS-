@@ -22,7 +22,7 @@ const Addcourse = () => {
 
   const [lecturedetails, setlecturedetails] = useState({
     lectureTitle: "",
-    lectureDuration: "",
+    lectureDuration: 0,
     lectureUrl: "",
     isPreviewFree: false,
   });
@@ -81,7 +81,7 @@ const Addcourse = () => {
 
       setlecturedetails({
         lectureTitle: "",
-        lectureDuration: "",
+        lectureDuration: 0,
         lectureUrl: "",
         isPreviewFree: false,
       });
