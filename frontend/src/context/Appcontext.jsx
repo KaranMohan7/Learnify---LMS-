@@ -86,7 +86,7 @@ const Appcontext = ({ children }) => {
 
   const getenrolledcourses = async() => {
          try {
-              const token = getToken()
+              const token = await getToken()
           const {data} = await axios.get(`${backendUrl}/user/user-enrollments`, {
                headers: { Authorization: `Bearer ${token}` },
           })
