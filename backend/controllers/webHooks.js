@@ -63,6 +63,7 @@ const clerkwebhooks = async (req, res) => {
 const stripeinstance = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const stripewebhook = async (request, response) => {
+    console.log("🔔 Webhook received");
   try {
 
     let event;
@@ -116,7 +117,7 @@ const stripewebhook = async (request, response) => {
 
     response.json({ received: true });
   } catch (error) {
-    res.status(401).json({ success: false, message: error.message });
+    response.status(401).json({ success: false, message: error.message });
   }
 };
 
