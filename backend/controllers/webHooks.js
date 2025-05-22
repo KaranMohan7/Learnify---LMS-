@@ -83,7 +83,7 @@ const stripewebhook = async (request, response) => {
         const { purchaseId } = session.data[0].metadata;
         const purchasedata = await purchaseModel.findById(purchaseId);
         const userdatamain = await userModel.findOneAndUpdate(
-          { clerkId: purchasedata.userId },
+          { _id: purchasedata.userId },
           { $push: { enrolledcourses: purchasedata.courseId.toString() } },
           { new: true }
         );

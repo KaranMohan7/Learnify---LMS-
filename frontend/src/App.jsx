@@ -14,6 +14,7 @@ import Navbar from './components/student/Navbar'
 import Navbareducator from './components/educator/Navbar'
 import Footer from './components/student/Footer'
 import "quill/dist/quill.snow.css";
+import Loading from './components/student/Loading'
 
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
         <Route path='/course-details/:id' element={<Coursedetails />} ></Route>
         <Route path='/my-enrollments' element={<Myenrollments />}></Route>
         <Route path='/player/:courseId' element={<Player />}></Route>
+        <Route path='/loading/:path' element={<Loading />}></Route>
                  {/* all the educator routes  */}
         <Route path='/educator' element={<Educator />} >
         <Route index element={<Dashboard />} />

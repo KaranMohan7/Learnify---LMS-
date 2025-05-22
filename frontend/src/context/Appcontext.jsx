@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
-import { assets, dummyCourses } from "../assets/assets/assets";
 import humanizeDuration from "humanize-duration";
 import axios from "axios";
+import { useAuth, useUser } from '@clerk/clerk-react';
 
 export const appcontext = createContext();
 
@@ -12,20 +12,39 @@ const Appcontext = ({ children }) => {
   const [allcourses, setallcourses] = useState([]);
   const [iseducator, setiseducator] = useState(false);
   const [enrolledcourses,setenrolledcourses] = useState([])
+  const [userdata,setuserdata] = useState(null)
+  const {getToken} = useAuth()
+  const {user} = useUser()
 
   const getallcourses = async () => {
     try {
-        const {data} = await axios.get(`${backendUrl}/user/getallcourses`, {
-          withCredentials: true
-        })
+        const {data} = await axios.get(`${backendUrl}/user/getallcourses`)
         if(data.success){
-          console.log(data.allcourses)
          setallcourses(data.allcourses);
         }else{
           console.log(data.message)
         }
     } catch (error) {
        console.log(error.message)
+    }
+  };
+
+  const getuserdata = async () => {
+    if(user.publicMetadata.role === 'educator'){
+      setiseducator(true)
+    }
+    try {
+      const token = await getToken();
+      const { data } = await axios.get(`${backendUrl}/user/getuserdata`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (data.success) {
+        setuserdata(data.userData);
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
@@ -38,7 +57,7 @@ const Appcontext = ({ children }) => {
       totalratings += i.rating;
     });
 
-    return totalratings / item.courseRatings.length;
+    return Math.floor(totalratings / item.courseRatings.length);
   };
 
   const calculatechaptertime = (chapter) => {
@@ -66,12 +85,30 @@ const Appcontext = ({ children }) => {
   }
 
   const getenrolledcourses = async() => {
-    setenrolledcourses(dummyCourses)
+         try {
+              const token = getToken()
+          const {data} = await axios.get(`${backendUrl}/user/user-enrollments`, {
+               headers: { Authorization: `Bearer ${token}` },
+          })
+          if(data.success){
+             setenrolledcourses(data.enrolledcourses.reverse())
+          }else{
+            console.log(data.message)
+          }
+         } catch (error) {
+            console.log(error.message)
+         }
   }
 
   useEffect(() => {
     getallcourses();
   }, []);
+
+  useEffect(() => {
+     if(user){
+      getuserdata()
+     }
+  },[user])
 
   const datavalue = {
     currency,
@@ -84,7 +121,11 @@ const Appcontext = ({ children }) => {
     calculatelectureno,
     getenrolledcourses,
     enrolledcourses,
-    backendUrl
+    backendUrl,
+    userdata,
+    setuserdata,
+    getToken,
+    getallcourses
   };
 
   return (

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { appcontext } from "../../../context/Appcontext";
 import { useNavigate } from "react-router-dom";
 import { Line } from 'rc-progress'
+import { useUser } from '@clerk/clerk-react';
 
 const Myenrollments = () => {
   const { getenrolledcourses, enrolledcourses, calculateCourseduration } = useContext(appcontext);
@@ -16,11 +17,13 @@ const Myenrollments = () => {
        { lecturecompleted: 2, totallectures: 4 },
   ])
   const navigate = useNavigate()
-
+  const {user} = useUser()
 
   useEffect(() => {
-    getenrolledcourses();
-  }, []);
+    if (user) {
+      getenrolledcourses();
+    }
+  }, [user]);
 
   return (
     <div className="w-full px-4 md:px-8 py-6 ">

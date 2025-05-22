@@ -1,19 +1,42 @@
 import React, { useContext } from "react";
 import { assets } from "../../assets/assets/assets";
 import { FaRegCircleUser } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   useClerk,
   UserButton,
   useUser,
 } from "@clerk/clerk-react";
 import { appcontext } from "../../context/Appcontext";
+import axios from "axios";
 
 const Navbar = () => {
 
   const { openSignIn } = useClerk();
   const { user } = useUser();
-  const { iseducator } = useContext(appcontext)
+  const { iseducator, backendUrl, setiseducator, getToken } = useContext(appcontext)
+  const navigate = useNavigate()
+
+
+  const updateToeducator = async() => {
+    if(iseducator){
+        navigate("/educator")
+        return
+    }
+    try {
+      const token = await getToken()
+      const {data} = await axios.get(`${backendUrl}/educator/updaterole`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if(data.success){
+        setiseducator(true)
+      }else{
+        setiseducator(false)
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
 
   return (
     <div className="w-full py-3 md:py-4 lg:py-5 flex items-center justify-between px-1 md:px-6 lg:px-16 border-b-[1px] border-zinc-700">
@@ -27,7 +50,7 @@ const Navbar = () => {
         <div className=" text-xs md:text-[16px] lg:text-[16px] cursor-pointer">
           {user && (
             <div className="flex items-center gap-0 md:gap-2 lg:gap-2 ">
-              <p>{iseducator ? 'Educator Dashboard' : 'Become Educator |'}</p>
+              <p onClick={updateToeducator}>{iseducator ? 'Educator Dashboard |' : 'Become Educator |'}</p>
               <Link to={'/my-enrollments'}>My Enrollments</Link>
             </div>
           )}

@@ -12,7 +12,7 @@ const Coursecard = ({ item }) => {
         <img src={item.courseThumbnail} alt="" />
         <div className="flex flex-col justify-start px-3 py-1">
           <p className="font-semibold">{item.courseTitle}</p>
-          <p>{item.educator.name}</p>
+          <p className="text-sm font-semibold text-zinc-600">By - {item.educator.name}</p>
           <div className="flex items-center gap-2">
             <p className="font-semibold">{calculaterating(item)}</p>
             <div className="flex items-center">

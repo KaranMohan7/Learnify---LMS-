@@ -9,6 +9,7 @@ import humanizeDuration from "humanize-duration";
 import { LuClock11 } from "react-icons/lu";
 import { HiMiniBookOpen } from "react-icons/hi2";
 import ReactPlayer from 'react-player';
+import axios from "axios";
 
 const Coursedetails = () => {
   const { id } = useParams();
@@ -23,21 +24,59 @@ const Coursedetails = () => {
     calculatechaptertime,
     currency,
     calculateCourseduration,
-    calculatelectureno
+    calculatelectureno,
+    backendUrl,
+    userdata,
+    getToken
   } = useContext(appcontext);
 
   const fetchcoursedetails = async () => {
-    try {
-      const maindata = allcourses.find((i) => i._id === id);
-      setcoursedetails(maindata);
-    } catch (error) {
-      console.log(error.message);
-    }
+      try {
+          const {data} = await axios.get(`${backendUrl}/user/particularcourse/${id}`)
+          if(data.success){
+             setcoursedetails(data.particularcourse);
+          }else{
+            console.log(data.message)
+          }
+      } catch (error) {
+        console.log(error.message)
+      }
   };
+
+  const enrollcourse = async(req,res) => {
+    try {
+      if(!userdata){
+        return console.log("Login to enroll !")
+      }
+      if(isalreadyenrolled){
+        return console.log("Already enrolled")
+      }
+      const token = await getToken()
+      const {data} = await axios.post(`${backendUrl}/user/enroll-course`, {id: coursedetails._id} , {
+           headers: { Authorization: `Bearer ${token}` },
+      })
+      if(data.success){
+        const {session_url} = data;
+        window.location.replace(session_url)
+      }else{
+        console.log(data.message)
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
 
   useEffect(() => {
     fetchcoursedetails();
   }, [allcourses]);
+
+  useEffect(() => {
+    if(userdata && coursedetails){
+      setisalreadyenrolled(userdata.enrolledcourses.includes(coursedetails._id))
+
+    }
+  }, [userdata, coursedetails])
+  
 
   if (!coursedetails) return <div className="w-full h-screen flex items-center justify-center "><Loading /></div>;
 
@@ -88,7 +127,7 @@ const Coursedetails = () => {
 
         <p>
           Course by{" "}
-          <span className="font-bold underline">Karan Mohan Talwar</span>
+          <span className="font-bold underline">{coursedetails.educator.name}</span>
         </p>
 
         {/* Course Structure */}
@@ -185,7 +224,7 @@ const Coursedetails = () => {
                     </div>
             </div>
             <div className="flex justify-center pt-4">
-            <button className="text-white font-semibold bg-blue-700 w-full px-2 py-2 rounded-md">{isalreadyenrolled ? 'Enrolled' : 'Enroll Now !'}</button>
+            <button onClick={enrollcourse} className="text-white font-semibold bg-blue-700 w-full px-2 py-2 rounded-md">{isalreadyenrolled ? 'Already Enrolled' : 'Enroll Now !'}</button>
             </div>
             <div className="py-5 px-3 ">
               <p className="font-semibold text-lg">Whats is in the course ?</p>
