@@ -33,15 +33,16 @@ const allowedOrigins = [
     credentials: true
   }))
   app.use(clerkMiddleware())
-
   app.use(cookieParser())
+  
+  app.post("/stripe", express.raw({type: 'application/json'}) ,stripewebhook)
   app.use(express.json())
   app.use(express.urlencoded({extended: true}))
 
   app.use("/user", userRouter)
   app.use("/educator", educatorRouter)
   app.post("/clerk", clerkwebhooks)
-  app.post("/stripe", express.raw({type: 'application/json'}) ,stripewebhook)
+
 
 app.listen(PORT, () => {
     console.log("server started successfully")
