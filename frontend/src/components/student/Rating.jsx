@@ -6,7 +6,6 @@ const Rating = ({initialstate, onrate}) => {
 
     const handlerating = (valuemain) => {
         setrating(valuemain)
-        
         if(onrate){
             onrate(valuemain)
         }

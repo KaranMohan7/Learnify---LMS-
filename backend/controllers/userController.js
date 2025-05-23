@@ -47,7 +47,7 @@ const getcoursebyId = async(req,res) => {
 const userenrollments = async(req,res) => {
     try {
         const userId = req.auth.userId;
-        const userEnrollments = await userModel.findOne({_id: userId}).populate('enrolledcourses', 'courseTitle courseContent courseThumbnail')
+        const userEnrollments = await userModel.findOne({_id: userId}).populate('enrolledcourses', 'courseTitle courseContent courseThumbnail courseRatings')
         if(!userEnrollments) return res.status(404).json({success: false, message: "Doesnt find enrollments"})
         res.status(200).json({success: true, enrolledcourses: userEnrollments.enrolledcourses})    
     } catch (error) {
@@ -156,7 +156,7 @@ const rateCourse = async(req,res) => {
 
          const course = await courseModel.findOne({_id: id})
          if(!course) return res.status(404).json({success: false, message: "Course Not found"})
-         const user = await userModel.findOne({clerkId: userId})
+         const user = await userModel.findOne({_id: userId})
          if(!user) return res.status(404).json({success: false, message: "user Not found"})
 
          if(!user.enrolledcourses.includes(id)){

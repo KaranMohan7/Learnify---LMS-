@@ -1,33 +1,105 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
-import { FaPlay, FaClock } from "react-icons/fa";
+import { FaPlay} from "react-icons/fa";
 import { appcontext } from "../../../context/Appcontext";
 import { useParams } from "react-router-dom";
 import humanizeDuration from "humanize-duration";
 import ReactPlayer from "react-player";
 import Loading from "../../student/Loading";
 import Rating from "../../student/Rating";
+import axios from "axios";
+import { TiTick } from "react-icons/ti";
 
 const Player = () => {
   const [playerEnrolledcourse, setplayerEnrolledcourse] = useState(null);
-  const { enrolledcourses, calculatechaptertime, getenrolledcourses } = useContext(appcontext);
+  const { enrolledcourses, calculatechaptertime, getenrolledcourses, getToken, backendUrl, userdata } = useContext(appcontext);
   const [activeindex, setactiveindex] = useState(null);
   const { courseId } = useParams();
   const [playerdata, setplayerdata] = useState(null);
+  const [progressdata, setprogressdata] = useState(null)
+  const [initialrating, setinitialrating] = useState(0)
 
   const fetchenrolledcourse = () => {
-    const maincourse = enrolledcourses.find((item) => item._id === courseId);
-    setplayerEnrolledcourse(maincourse);
-    console.log(maincourse);
+
+   enrolledcourses.map((item) => {
+       if(item._id === courseId){
+         setplayerEnrolledcourse(item)
+         console.log(item)
+         item.courseRatings.map((item) => {
+           if(item.userid === userdata._id){
+            setinitialrating(item.rating)
+           }
+         })
+       }
+    })
+
   };
 
+  const updateProgress = async(lectureId) => {
+    try {
+      const token = await getToken()
+      const {data} = await axios.post(`${backendUrl}/user/update-progress`, {id: courseId, lectureId} , {
+           headers: { Authorization: `Bearer ${token}` },
+      })
+      if(data.success){
+        console.log(data.message)
+        getprogress()
+      }else{
+        console.log(data.message)
+      }
+    } catch (error) {
+       console.log(error.message)
+    }
+  }
+
+  const getprogress = async() => {
+    try {
+         const token = await getToken()
+         const {data} = await axios.post(`${backendUrl}/user/get-progress`, {id: courseId}, {
+              headers: { Authorization: `Bearer ${token}` },
+         })
+         if(data.success){
+          setprogressdata(data.progress)
+         }else{
+          console.log(data.message)
+         }
+    } catch (error) {
+         console.log(error.message)
+    }
+  }
+
+  const updateRating = async(rating) => {
+    try {
+        const token = await getToken()
+        const {data} = await axios.post(`${backendUrl}/user/add-ratings`, {id: courseId, rating}, {
+                        headers: { Authorization: `Bearer ${token}` },
+        })
+        if(data.success){
+          console.log(data.message)
+          fetchenrolledcourse()
+        }else{
+          console.log(data.message)
+        }
+    } catch (error) {
+       console.log(error.message)
+    }
+  }
+
   useEffect(() => {
-    fetchenrolledcourse();
+    if (enrolledcourses.length > 0) {
+      fetchenrolledcourse();
+    }
   }, [enrolledcourses]);
+
+  useEffect(() => {
+    getprogress()
+  },[])
 
    useEffect(() => {
     getenrolledcourses()
    },[])
+
+
   return playerEnrolledcourse ? (
     <div className="w-full flex flex-col-reverse lg:flex-row items-start px-4 md:px-10 py-2">
       <div className="py-5 w-full lg:w-1/2 mt-10">
@@ -69,7 +141,7 @@ const Player = () => {
                       <li key={idx}>
                         <div className="flex justify-between items-center gap-4 flex-wrap">
                           <div className="flex items-center gap-2 text-sm">
-                            <FaPlay size={12} />
+                            { progressdata && progressdata.lectureCompleted.includes(lec.lectureId) ? <TiTick size={20} />  : <FaPlay size={12} /> }
                             <p className="font-semibold">{lec.lectureTitle}</p>
                           </div>
                           <div className="flex items-center gap-2 text-sm text-zinc-500">
@@ -81,6 +153,7 @@ const Player = () => {
                                     videoid: lec.lectureUrl.split("/").pop(),
                                     chapter: index + 1,
                                     lecture: idx + 1,
+                                    lectureId: lec.lectureId
                                   })
                                 }
                                 className="text-blue-500 cursor-pointer"
@@ -105,7 +178,7 @@ const Player = () => {
               </div>
             ))}
             <h1 className="mt-5 font-semibold text-xl md:text-2xl">Rate our Course:</h1>
-            <Rating initialstate={0}/>
+            <Rating initialstate={initialrating} onrate={updateRating}/>
         </div>
       </div>
       {/* Course card */}
@@ -124,14 +197,16 @@ const Player = () => {
               alt="Course Thumbnail"
             />
           )}
-          <div className="flex justify-between items-center px-1 py-2 ">
+       {
+        playerdata && <div className="flex justify-between items-center px-1 py-2 ">
            <h1 className="font-semibold text-sm md:text-lg px-2 py-2 ">
               {playerdata && playerdata.chapter}.
               {playerdata && playerdata.lecture}{" "}
               {playerdata && playerdata.lectureTitle}
             </h1>
-            <button className="bg-blue-700 px-1 py-1 text-white font-semibold rounded-md text-sm">Mark as complete</button>
+            <button onClick={() => updateProgress(playerdata.lectureId)} className="bg-blue-700 px-1 py-1 text-white font-semibold rounded-md text-sm">{progressdata && progressdata.lectureCompleted.includes(playerdata.lectureId) ? 'Completed' : 'Mark as complete'}</button>
           </div>
+       }
         </div>
       </div>
     </div>
