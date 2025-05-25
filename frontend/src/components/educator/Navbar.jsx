@@ -3,6 +3,7 @@ import { assets } from '../../assets/assets/assets'
 import { CgProfile } from "react-icons/cg";
 
 const Navbar = () => {
+  
   return (
     <div className='w-full py-5 flex items-center justify-between  px-5 lg:px-11 border-b-[1px] border-zinc-00'>
          <img

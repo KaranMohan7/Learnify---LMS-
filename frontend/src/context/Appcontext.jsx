@@ -23,9 +23,11 @@ const Appcontext = ({ children }) => {
          setallcourses(data.allcourses);
         }else{
           console.log(data.message)
+  
         }
     } catch (error) {
        console.log(error.message)
+ 
     }
   };
 
@@ -125,7 +127,7 @@ const Appcontext = ({ children }) => {
     userdata,
     setuserdata,
     getToken,
-    getallcourses
+    getallcourses,
   };
 
   return (

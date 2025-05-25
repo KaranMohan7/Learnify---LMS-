@@ -6,7 +6,7 @@ import upload from '../middlewares/multer.js'
 const educatorRouter = express.Router()
 
 educatorRouter.get("/updaterole", updateRoleeducator)
-educatorRouter.post("/add-course", upload.single("file"), addCourse)
+educatorRouter.post("/add-course", upload.single("file"), educatorAuthentication, addCourse)
 educatorRouter.get("/get-courses",educatorAuthentication, getcourses)
 educatorRouter.get("/getdashboardata",educatorAuthentication, getdashboardData)
 educatorRouter.get("/getenrolledstudentsdata",educatorAuthentication,getenrolledstudentsdata)

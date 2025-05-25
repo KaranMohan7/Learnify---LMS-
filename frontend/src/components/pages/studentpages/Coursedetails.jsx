@@ -17,6 +17,7 @@ const Coursedetails = () => {
   const [activeindex, setactiveindex] = useState(null);
   const [isalreadyenrolled, setisalreadyenrolled] = useState(false)
   const [playerdata,setplayerdata] = useState(null)
+  const [loading,setloading] = useState(false)
 
   const {
     allcourses,
@@ -43,7 +44,8 @@ const Coursedetails = () => {
       }
   };
 
-  const enrollcourse = async(req,res) => {
+  const enrollcourse = async() => {
+    setloading(true)
     try {
       if(!userdata){
         return console.log("Login to enroll !")
@@ -58,11 +60,14 @@ const Coursedetails = () => {
       if(data.success){
         const {session_url} = data;
         window.location.replace(session_url)
+        setloading(false)
       }else{
         console.log(data.message)
+         setloading(false)
       }
     } catch (error) {
       console.log(error.message)
+       setloading(false)
     }
   }
 
@@ -82,7 +87,11 @@ const Coursedetails = () => {
 
   return (
     <div className="w-full flex flex-col-reverse lg:flex-row items-start px-4 sm:px-8 md:px-14 gap-6">
-      
+       {
+        loading && <div className="flex fixed justify-center items-center w-full h-screen bg-[rgba(0,0,0,0.2)] z-[100] top-0 left-0 ">
+        <Loading />
+      </div>
+      }
       {/* Left Column */}
       <div className="w-full lg:w-1/2 mt-5">
         <h1 className="text-2xl md:text-3xl lg:text-5xl font-bold mt-3 pb-2">

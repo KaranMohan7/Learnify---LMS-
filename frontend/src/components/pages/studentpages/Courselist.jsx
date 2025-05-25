@@ -4,6 +4,7 @@ import Coursecard from '../../student/Coursecard'
 import { appcontext } from '../../../context/Appcontext'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RxCross2 } from "react-icons/rx";
+import Loading from '../../student/Loading'
 
 const Courselist = () => {
   
@@ -18,7 +19,6 @@ const Courselist = () => {
        const temp = allcourses.slice()
        input ? setfilteredresult(allcourses.filter((i) => i.courseTitle.toLowerCase().includes(input.toLowerCase()) ) ) : setfilteredresult(temp)
      }
-
   }
 
   useEffect(() => {
@@ -42,9 +42,9 @@ const Courselist = () => {
   
        <div className='flex flex-wrap items-center gap-3 md:gap-5 lg:gap-8 pb-10 justify-center'>
         {
-          filteredresult && filteredresult.map((item,index) => (
-               <Coursecard item={item} key={index} />
-          ))
+          filteredresult.length > 0 ? filteredresult.map((item,index) => (
+               <Coursecard item={item} key={index} /> 
+          )): <Loading />
         }
        </div>
 

@@ -8,6 +8,7 @@ import { MdKeyboardArrowUp } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { appcontext } from "../../../context/Appcontext";
 import axios from "axios";
+import Loading from "../../student/Loading";
 
 const Addcourse = () => {
   const quillref = useRef(null);
@@ -26,7 +27,8 @@ const Addcourse = () => {
     lectureUrl: "",
     isPreviewFree: false,
   });
-  const { backendUrl } = useContext(appcontext);
+  const [loading,setloading] = useState(false)
+  const { backendUrl, getToken} = useContext(appcontext);
 
   useEffect(() => {
     if (!quillref.current && editorref.current) {
@@ -61,7 +63,7 @@ const Addcourse = () => {
 
   const addlectures = (chapterid) => {
     if (
-      lecturedetails.lectureDuration.trim() &&
+      lecturedetails.lectureDuration > 0 &&
       lecturedetails.lectureTitle.trim() &&
       lecturedetails.lectureUrl.trim()
     ) {
@@ -69,7 +71,7 @@ const Addcourse = () => {
         ...lecturedetails,
         lectureId: uniqid(),
          lectureOrder:
-          chapters.length > 0 ? chapters.slice(-1)[0].chapterOrder + 1 : 1,
+            chapters.find(ch => ch.chapterId === chapterid)?.chapterContent.length + 1 || 1,
       };
       setchapters((prev) =>
         prev.map((item) =>
@@ -96,7 +98,7 @@ const Addcourse = () => {
     setchapters((prev) =>
       prev.map((item) =>
         item.chapterId === chapterid
-          ? { ...item, chapterContent: item.lectures.filter((lec) => lec.lectureId !== id) }
+          ? { ...item, chapterContent: item.chapterContent.filter((lec) => lec.lectureId !== id) }
           : item
       )
     );
@@ -104,6 +106,7 @@ const Addcourse = () => {
 
   const handlesubmit = async (e) => {
     e.preventDefault();
+       setloading(true)
     if (!image) {
       return console.log("image upload plz");
     }
@@ -115,36 +118,38 @@ const Addcourse = () => {
       discount: discount,
       courseContent: chapters,
     };
-    console.log(courseData)
     const formData = new FormData();
     formData.append("courseData", JSON.stringify(courseData));
     formData.append("file", image);
-
+    const token = await getToken()
     try {
       const {data} = await axios.post(
         `${backendUrl}/educator/add-course`,
         formData,
         {
-          withCredentials: true,
+        headers: { Authorization: `Bearer ${token}` },
         }
       );
       if (data.success) {
-        console.log("hello love");
+        setloading(false)
         setchapterTitle("")
         setcourseprice("")
         setcoursetitle("")
-        setdiscount("")
+        setdiscount(0)
         setlecturedetails({
               lectureTitle: "",
-              lectureDuration: "",
+              lectureDuration: 0,
               lectureUrl: "",
               isPreviewFree: false,
         })
+        quillref.current?.setText(""); 
         setchapters([])
       } else {
+         setloading(false)
         console.log(data.message);
       }
     } catch (error) {
+       setloading(false)
       console.log(error.message);
     }
   };
@@ -152,6 +157,11 @@ const Addcourse = () => {
   return (
     <div className="w-full min-h-screen p-5 ">
       <p className="font-semibold text-xl mb-4">Add A course</p>
+       {
+        loading && <div className="flex fixed justify-center items-center w-full h-screen bg-[rgba(0,0,0,0.2)] z-[100] top-0 left-0 ">
+        <Loading />
+      </div>
+      }
       <form onSubmit={handlesubmit}>
         <div className="flex flex-col justify-center py-3 gap-4">
           <div>

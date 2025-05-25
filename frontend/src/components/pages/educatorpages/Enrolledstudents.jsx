@@ -1,17 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { dummyStudentEnrolled } from "../../../assets/assets/assets";
+import React, { useContext, useEffect, useState } from "react";
+import { appcontext } from "../../../context/Appcontext";
+import axios from "axios";
+import Loading from "../../student/Loading";
 
 const Enrolledstudents = () => {
   const [enrolledStudents, setenrolledstudents] = useState([]);
+  const {getToken, backendUrl, iseducator} = useContext(appcontext)
 
   const fetchenrolledstudents = async () => {
-    setenrolledstudents(dummyStudentEnrolled);
-    console.log(dummyCourses)
+    try {
+       const token = await getToken()
+       const {data} = await axios.get(`${backendUrl}/educator/getenrolledstudentsdata`, {
+                 headers: { Authorization: `Bearer ${token}` },
+       })
+       if(data.success){
+        setenrolledstudents(data.enrolledStudents.reverse())
+        console.log(data.enrolledStudents)
+       }else{
+        console.log(data.message)
+       }
+    } catch (error) {
+      console.log(error.message)
+    }
   };
 
   useEffect(() => {
+    if(iseducator){
      fetchenrolledstudents()
-  },[])
+    }
+
+  },[iseducator])
 
   return (
     <div className="w-full h-screen p-5">
@@ -23,7 +41,7 @@ const Enrolledstudents = () => {
         <p className="w-3/12">Date</p>
       </div>
       {
-          enrolledStudents ? (
+          enrolledStudents.length > 0 ? (
           enrolledStudents
             .map((item, index) => (
               <div
@@ -39,7 +57,7 @@ const Enrolledstudents = () => {
                 {/* Student */}
                 <div className="sm:w-4/12 flex items-center gap-2">
                   <img
-                    src={item?.student.imageUrl}
+                    src={item?.student.imageurl}
                     alt="student"
                     className="w-8 h-8 rounded-full object-cover"
                   />
@@ -63,7 +81,7 @@ const Enrolledstudents = () => {
               </div>
             ))
         ) : (
-          <p className="font-semibold mt-3">Not Available</p>
+          <Loading />
         )}
     </div>
   );

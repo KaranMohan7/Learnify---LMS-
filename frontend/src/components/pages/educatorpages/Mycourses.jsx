@@ -1,17 +1,33 @@
 import React, { useContext, useEffect, useState } from "react";
 import { appcontext } from "../../../context/Appcontext";
+import axios from "axios";
+import Loading from "../../student/Loading";
 
 const Mycourses = () => {
-  const { allcourses, currency } = useContext(appcontext);
+  const { getToken, backendUrl, currency, iseducator } = useContext(appcontext);
   const [educatorcourses, seteducatorcourses] = useState([]);
 
   const fetchallcourses = async () => {
-    seteducatorcourses(allcourses);
+    try {
+       const token = await getToken()
+       const {data} = await axios.get(`${backendUrl}/educator/get-courses`, {
+         headers: { Authorization: `Bearer ${token}` },
+       })
+       if(data.success){
+             seteducatorcourses(data.allcourses)
+       }else{
+        console.log(data.message)
+       }
+    } catch (error) {
+       console.log(error.message)
+    }
   };
 
   useEffect(() => {
+    if(iseducator){
     fetchallcourses();
-  }, [allcourses]);
+    }
+  }, [iseducator]);
 
   return (
     <div className="w-full min-h-screen p-5 overflow-x-auto">
@@ -26,7 +42,7 @@ const Mycourses = () => {
       </div>
 
       {/* Course list */}
-      {educatorcourses?.map((item, index) => (
+      {educatorcourses.length > 0 ? educatorcourses.map((item, index) => (
         <div
           key={index}
           className="w-full px-2 py-3 bg-white rounded-md mt-3 flex flex-col md:flex-row md:items-center md:gap-2 shadow-sm"
@@ -65,7 +81,7 @@ const Mycourses = () => {
             <p className="text-sm lg:text-base">{new Date(item.createdAt).toLocaleDateString()}</p>
           </div>
         </div>
-      ))}
+      )) : <div className="w-full h-screen"><Loading /></div>}
     </div>
   );
 };

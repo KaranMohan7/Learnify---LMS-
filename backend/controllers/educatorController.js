@@ -106,7 +106,7 @@ const getdashboardData = async (req, res) => {
         {
           _id: { $in: course.enrolledStudents },
         },
-        "name imageUrl"
+        "name imageurl"
       );
 
       students.forEach((item) => {
@@ -142,7 +142,7 @@ const getenrolledstudentsdata = async (req, res) => {
          const purchases = await purchaseModel.find({
           courseId: { $in: totalids },
          status: "completed",
-    }).populate("userId", "name, imageUrl").populate("courseId","courseTitle");
+    }).populate("userId", "name imageurl").populate("courseId","courseTitle");
 
     const enrolledStudents = purchases.map(item=>  ({
       student: item.userId,
