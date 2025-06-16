@@ -17,7 +17,7 @@ const Coursessection = () => {
         <p className='text-zinc-400 py-2 text-center'>Discover our top-rated courses across various categories. From coding and design to business and wellness, our courses are crafted to deliver results.</p>
         <div className='flex flex-wrap items-center justify-evenly mt-3 w-full gap-3'>
         {
-            allcourses ?  allcourses.slice(0,4).map((item,index) => (
+            allcourses.length > 0 ? allcourses.slice(0,4).map((item,index) => (
                 <div key={index}>
                   <Coursecard item={item}/>
                 </div>
