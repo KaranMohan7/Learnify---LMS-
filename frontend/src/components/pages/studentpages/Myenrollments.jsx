@@ -6,6 +6,7 @@ import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import Loading from '../../../components/student/Loading'
 import { toast } from "react-toastify";
+import Loader from '../../student/Loader'
 
 const Myenrollments = () => {
   const {
@@ -122,13 +123,13 @@ const Myenrollments = () => {
                     onClick={() => navigate(`/player/${item._id}`)}
                     className="bg-blue-600 hover:bg-blue-700 transition text-white rounded px-3 py-2 font-bold"
                   >
-                    {progressarray[index] &&
+                    {progressarray[index] ?
                       `${
                         progressarray[index].lecturecompleted ===
                         progressarray[index].totallectures
                           ? "Completed"
                           : "On Going"
-                      }`}
+                      }` : <Loader />}
                   </button>
                 </div>
               </div>
