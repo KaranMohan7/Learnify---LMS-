@@ -9,6 +9,7 @@ import Loading from "../../student/Loading";
 import Rating from "../../student/Rating";
 import axios from "axios";
 import { TiTick } from "react-icons/ti";
+import { toast } from "react-toastify";
 
 const Player = () => {
   const [playerEnrolledcourse, setplayerEnrolledcourse] = useState(null);
@@ -42,13 +43,13 @@ const Player = () => {
            headers: { Authorization: `Bearer ${token}` },
       })
       if(data.success){
-        console.log(data.message)
         getprogress()
+         toast.success(data.message)
       }else{
-        console.log(data.message)
+        toast.error(data.message)
       }
     } catch (error) {
-       console.log(error.message)
+        toast.error(error.message)
     }
   }
 
@@ -61,10 +62,10 @@ const Player = () => {
          if(data.success){
           setprogressdata(data.progress)
          }else{
-          console.log(data.message)
+           toast.error(data.message)
          }
     } catch (error) {
-         console.log(error.message)
+         toast.error(error.message)
     }
   }
 
@@ -75,13 +76,13 @@ const Player = () => {
                         headers: { Authorization: `Bearer ${token}` },
         })
         if(data.success){
-          console.log(data.message)
           fetchenrolledcourse()
+          toast.success(data.message)
         }else{
-          console.log(data.message)
+           toast.error(data.message)
         }
     } catch (error) {
-       console.log(error.message)
+       toast.error(error.message)
     }
   }
 

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { appcontext } from "../../../context/Appcontext";
 import axios from "axios";
 import Loading from "../../student/Loading";
+import { toast } from "react-toastify";
 
 const Enrolledstudents = () => {
   const [enrolledStudents, setenrolledstudents] = useState([]);
@@ -15,12 +16,11 @@ const Enrolledstudents = () => {
        })
        if(data.success){
         setenrolledstudents(data.enrolledStudents.reverse())
-        console.log(data.enrolledStudents)
        }else{
-        console.log(data.message)
+        toast.error(data.message)
        }
     } catch (error) {
-      console.log(error.message)
+        toast.error(error.message)
     }
   };
 
@@ -33,7 +33,7 @@ const Enrolledstudents = () => {
 
   return (
     <div className="w-full h-screen p-5">
-      <p className="font-semibold text-xl">All Enrolled Students</p>
+      <p className="font-semibold text-xl underline">All Enrolled Students</p>
       <div className="hidden sm:flex font-semibold bg-zinc-200 rounded-lg items-center justify-between px-2 py-2 mt-4">
         <p className="w-1/12">S No</p>
         <p className="w-4/12">Student Name</p>

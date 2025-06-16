@@ -5,6 +5,7 @@ import { Line } from "rc-progress";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import Loading from '../../../components/student/Loading'
+import { toast } from "react-toastify";
 
 const Myenrollments = () => {
   const {
@@ -42,7 +43,7 @@ const Myenrollments = () => {
       );
       setprogressarray(tempprogress);
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.message)
     }
   };
 

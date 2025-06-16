@@ -15,6 +15,7 @@ import Navbareducator from './components/educator/Navbar'
 import Footer from './components/student/Footer'
 import "quill/dist/quill.snow.css";
 import Loading from './components/student/Loading'
+import { ToastContainer } from 'react-toastify'
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
 
   return (
     <div className='w-full min-h-screen'>
+      <ToastContainer />
       { shownavbar ? <Navbareducator /> : <Navbar />  }
       <Routes>
                  {/*  All the student routes */}

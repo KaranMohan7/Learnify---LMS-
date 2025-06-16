@@ -9,6 +9,7 @@ import { RxCross2 } from "react-icons/rx";
 import { appcontext } from "../../../context/Appcontext";
 import axios from "axios";
 import Loading from "../../student/Loading";
+import { toast } from "react-toastify";
 
 const Addcourse = () => {
   const quillref = useRef(null);
@@ -108,7 +109,7 @@ const Addcourse = () => {
     e.preventDefault();
        setloading(true)
     if (!image) {
-      return console.log("image upload plz");
+      return toast.warn("please upload image !");
     }
 
     const courseData = {
@@ -144,19 +145,20 @@ const Addcourse = () => {
         })
         quillref.current?.setText(""); 
         setchapters([])
+          toast.success(data.message)
       } else {
          setloading(false)
-        console.log(data.message);
+          toast.error(data.message)
       }
     } catch (error) {
        setloading(false)
-      console.log(error.message);
+       toast.error(error.message)
     }
   };
 
   return (
     <div className="w-full min-h-screen p-5 ">
-      <p className="font-semibold text-xl mb-4">Add A course</p>
+      <p className="font-semibold text-xl mb-4 underline">Add A course</p>
        {
         loading && <div className="flex fixed justify-center items-center w-full h-screen bg-[rgba(0,0,0,0.2)] z-[100] top-0 left-0 ">
         <Loading />

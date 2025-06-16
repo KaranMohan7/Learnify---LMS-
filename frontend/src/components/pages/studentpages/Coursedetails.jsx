@@ -10,6 +10,7 @@ import { LuClock11 } from "react-icons/lu";
 import { HiMiniBookOpen } from "react-icons/hi2";
 import ReactPlayer from 'react-player';
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Coursedetails = () => {
   const { id } = useParams();
@@ -37,10 +38,10 @@ const Coursedetails = () => {
           if(data.success){
              setcoursedetails(data.particularcourse);
           }else{
-            console.log(data.message)
+            toast.error(data.message)
           }
       } catch (error) {
-        console.log(error.message)
+        toast.error(error.message)
       }
   };
 
@@ -48,10 +49,10 @@ const Coursedetails = () => {
     setloading(true)
     try {
       if(!userdata){
-        return console.log("Login to enroll !")
+        return toast.warn("Login to enroll!")
       }
       if(isalreadyenrolled){
-        return console.log("Already enrolled")
+        return toast.warn("Already Enrolled")
       }
       const token = await getToken()
       const {data} = await axios.post(`${backendUrl}/user/enroll-course`, {id: coursedetails._id} , {
@@ -61,12 +62,13 @@ const Coursedetails = () => {
         const {session_url} = data;
         window.location.replace(session_url)
         setloading(false)
+        toast.success("Enrolled Successfully")
       }else{
-        console.log(data.message)
+        toast.error(data.message)
          setloading(false)
       }
     } catch (error) {
-      console.log(error.message)
+       toast.error(error.message)
        setloading(false)
     }
   }

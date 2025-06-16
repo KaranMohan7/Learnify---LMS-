@@ -12,7 +12,7 @@ const updateRoleeducator = async (req, res) => {
         role: "educator",
       },
     });
-    res.status(200).json({ success: true, message: "You are a educator now " });
+    res.status(200).json({ success: true, message: "You are a educator now" });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }

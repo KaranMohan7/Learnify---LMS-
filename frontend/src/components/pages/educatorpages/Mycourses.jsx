@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { appcontext } from "../../../context/Appcontext";
 import axios from "axios";
 import Loading from "../../student/Loading";
+import { toast } from "react-toastify";
 
 const Mycourses = () => {
   const { getToken, backendUrl, currency, iseducator } = useContext(appcontext);
@@ -14,12 +15,12 @@ const Mycourses = () => {
          headers: { Authorization: `Bearer ${token}` },
        })
        if(data.success){
-             seteducatorcourses(data.allcourses)
+         seteducatorcourses(data.allcourses)
        }else{
-        console.log(data.message)
+         toast.error(data.message)
        }
     } catch (error) {
-       console.log(error.message)
+       toast.error(error.message)
     }
   };
 
@@ -31,7 +32,7 @@ const Mycourses = () => {
 
   return (
     <div className="w-full min-h-screen p-5 overflow-x-auto">
-      <p className="font-semibold text-xl mb-4">My Courses</p>
+      <p className="font-semibold text-xl mb-4 underline">My Courses</p>
 
       {/* Header row */}
       <div className="bg-zinc-200 hidden md:flex w-full px-4 py-2 font-semibold items-center rounded-md">

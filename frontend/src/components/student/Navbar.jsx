@@ -9,6 +9,7 @@ import {
 } from "@clerk/clerk-react";
 import { appcontext } from "../../context/Appcontext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
 
@@ -21,7 +22,7 @@ const Navbar = () => {
   const updateToeducator = async() => {
     if(iseducator){
         navigate("/educator")
-        return
+        return;
     }
     try {
       const token = await getToken()
@@ -30,11 +31,13 @@ const Navbar = () => {
       })
       if(data.success){
         setiseducator(true)
+        toast.success(data.message)
       }else{
         setiseducator(false)
+        toast.error(data.message)
       }
     } catch (error) {
-      console.log(error.message)
+      toast.error(error.message)
     }
   }
 

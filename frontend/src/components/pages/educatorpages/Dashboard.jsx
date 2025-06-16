@@ -6,6 +6,7 @@ import { appcontext } from "../../../context/Appcontext";
 import axios from "axios";
 import Loading from "../../student/Loading";
 import Loader from "../../student/Loader";
+import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const { currency, iseducator, backendUrl, getToken } = useContext(appcontext);
@@ -19,12 +20,11 @@ const Dashboard = () => {
       });
       if (data.success) {
         setdashboarddata(data.dashboardData);
-        console.log(data.dashboardData);
       } else {
-        console.log(data.message);
+        toast.error(data.message)
       }
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.message)
     }
   };
 
@@ -59,7 +59,12 @@ const Dashboard = () => {
           <RiMoneyDollarCircleFill size={30} />
           <div>
             <p className="lg:text-xl font-semibold">
-             {currency} {dashboarddata.totalEarnings || <Loader />}
+             { currency && dashboarddata.totalEarnings ? (
+              <>
+              {currency} {dashboarddata.totalEarnings}
+              </>
+              ) : <Loader /> 
+            }
             </p>
             <p>Total Earnings</p>
           </div>
@@ -67,7 +72,7 @@ const Dashboard = () => {
       </div>
 
       {/* Latest Enrollments Section */}
-      <p className="font-semibold text-xl mt-16">Latest Enrollments</p>
+      <p className="font-semibold text-xl mt-16 underline">Latest Enrollments</p>
       <div className="w-full py-3">
 
         {/* Table Header */}

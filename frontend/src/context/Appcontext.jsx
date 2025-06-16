@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState } from "react";
 import humanizeDuration from "humanize-duration";
 import axios from "axios";
 import { useAuth, useUser } from '@clerk/clerk-react';
+import { toast } from "react-toastify";
 
 export const appcontext = createContext();
 
@@ -22,11 +23,10 @@ const Appcontext = ({ children }) => {
         if(data.success){
          setallcourses(data.allcourses);
         }else{
-          console.log(data.message)
-  
+          toast.error(data.message)
         }
     } catch (error) {
-       console.log(error.message)
+     toast.error(error.message)
  
     }
   };
@@ -43,10 +43,10 @@ const Appcontext = ({ children }) => {
       if (data.success) {
         setuserdata(data.userData);
       } else {
-        console.log(data.message);
+         toast.error(data.message)
       }
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.message)
     }
   };
 
@@ -95,10 +95,10 @@ const Appcontext = ({ children }) => {
           if(data.success){
              setenrolledcourses(data.enrolledcourses.reverse())
           }else{
-            console.log(data.message)
+             toast.error(data.message)
           }
          } catch (error) {
-            console.log(error.message)
+            toast.error(error.message)
          }
   }
 
