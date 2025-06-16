@@ -19,6 +19,7 @@ const Player = () => {
   const [playerdata, setplayerdata] = useState(null);
   const [progressdata, setprogressdata] = useState(null)
   const [initialrating, setinitialrating] = useState(0)
+  const [loading,setloading] = useState(false)
 
   const fetchenrolledcourse = () => {
 
@@ -37,6 +38,7 @@ const Player = () => {
   };
 
   const updateProgress = async(lectureId) => {
+    setloading(true)
     try {
       const token = await getToken()
       const {data} = await axios.post(`${backendUrl}/user/update-progress`, {id: courseId, lectureId} , {
@@ -45,11 +47,14 @@ const Player = () => {
       if(data.success){
         getprogress()
          toast.success(data.message)
+         setloading(false)
       }else{
         toast.error(data.message)
+        setloading(false)
       }
     } catch (error) {
         toast.error(error.message)
+        setloading(false)
     }
   }
 
@@ -70,6 +75,7 @@ const Player = () => {
   }
 
   const updateRating = async(rating) => {
+     setloading(true)
     try {
         const token = await getToken()
         const {data} = await axios.post(`${backendUrl}/user/add-ratings`, {id: courseId, rating}, {
@@ -78,11 +84,14 @@ const Player = () => {
         if(data.success){
           fetchenrolledcourse()
           toast.success(data.message)
+           setloading(false)
         }else{
            toast.error(data.message)
+            setloading(false)
         }
     } catch (error) {
        toast.error(error.message)
+        setloading(false)
     }
   }
 
@@ -103,6 +112,11 @@ const Player = () => {
 
   return playerEnrolledcourse ? (
     <div className="w-full flex flex-col-reverse lg:flex-row items-start px-4 md:px-10 py-2">
+        {
+        loading && <div className="flex fixed justify-center items-center w-full h-screen bg-[rgba(0,0,0,0.2)] z-[100] top-0 left-0 ">
+        <Loading />
+      </div>
+      }
       <div className="py-5 w-full lg:w-1/2 mt-10">
       <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold text-nowrap mb-3">
         Course Structure
