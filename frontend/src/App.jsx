@@ -46,7 +46,6 @@ const App = () => {
       { shownavbar ? null : <Footer />  }
     </div>
   )
-
 }
 
 export default App
