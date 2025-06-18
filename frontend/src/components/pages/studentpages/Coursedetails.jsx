@@ -59,10 +59,10 @@ const Coursedetails = () => {
            headers: { Authorization: `Bearer ${token}` },
       })
       if(data.success){
+        toast.success("Enrolled Successfully")
         const {session_url} = data;
         window.location.replace(session_url)
         setloading(false)
-        toast.success("Enrolled Successfully")
       }else{
         toast.error(data.message)
          setloading(false)

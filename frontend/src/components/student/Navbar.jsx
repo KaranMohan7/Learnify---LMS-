@@ -56,7 +56,7 @@ const Navbar = () => {
               <p onClick={updateToeducator}>{iseducator ? 'Educator Dashboard |' : 'Become Educator |'}</p>
               <Link to={'/my-enrollments'}>My Enrollments</Link>
             </div>
-          )}
+          ) }
           {user ? null : (
             <button
               onClick={() => openSignIn()}
@@ -76,13 +76,13 @@ const Navbar = () => {
             },
           }}/>
         ) : (
-          <button
+            <button
             onClick={() => openSignIn()}
             className="bg-blue-800 text-white font-semibold px-4 py-2 rounded-md hidden md:block lg:block transition-all duration-300 hover:bg-blue-900"
           >
             Create Account
-          </button>
-        )}
+          </button> 
+ )}
       </div>
     </div>
   );

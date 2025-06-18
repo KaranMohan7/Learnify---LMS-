@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 *{
-    font-family: 'Helvetica Neue Regular';
+    font-family: 'Helvetica Neue Regular','Outfit','sans-serif';
 }
 
 .custom-text h2{
