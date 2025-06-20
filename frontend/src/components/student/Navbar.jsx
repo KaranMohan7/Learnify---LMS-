@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { assets } from "../../assets/assets/assets";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ import {
 import { appcontext } from "../../context/Appcontext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Loading from "./Loading";
 
 const Navbar = () => {
 
@@ -17,9 +18,11 @@ const Navbar = () => {
   const { user } = useUser();
   const { iseducator, backendUrl, setiseducator, getToken } = useContext(appcontext)
   const navigate = useNavigate()
+  const [loading,setloading] = useState(false)
 
 
   const updateToeducator = async() => {
+    setloading(true)
     if(iseducator){
         navigate("/educator")
         return;
@@ -32,17 +35,25 @@ const Navbar = () => {
       if(data.success){
         setiseducator(true)
         toast.success(data.message)
+        setloading(false)
       }else{
         setiseducator(false)
         toast.error(data.message)
+        setloading(false)
       }
     } catch (error) {
       toast.error(error.message)
+        setloading(false)
     }
   }
 
   return (
     <div className="w-full py-3 md:py-4 lg:py-5 flex items-center justify-between px-1 md:px-6 lg:px-16 border-b-[1px] border-zinc-700">
+      {
+        loading && <div className="flex fixed justify-center items-center w-full h-screen bg-[rgba(0,0,0,0.2)] z-[100] top-0 left-0 ">
+        <Loading />
+      </div>
+      }
       <Link to={'/'}>
         <img
           src={assets.logo}

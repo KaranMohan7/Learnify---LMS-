@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { Line } from "rc-progress";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
-import Loading from '../../../components/student/Loading'
+import Loading from "../../../components/student/Loading";
 import { toast } from "react-toastify";
-import Loader from '../../student/Loader'
+import Loader from "../../student/Loader";
 
 const Myenrollments = () => {
   const {
@@ -44,7 +44,7 @@ const Myenrollments = () => {
       );
       setprogressarray(tempprogress);
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
   };
 
@@ -53,12 +53,12 @@ const Myenrollments = () => {
       getenrolledcourses();
     }
   }, [user]);
- 
+
   useEffect(() => {
-    if(enrolledcourses.length > 0){
-        getcourseprogress();
+    if (enrolledcourses.length > 0) {
+      getcourseprogress();
     }
-  },[enrolledcourses])
+  }, [enrolledcourses]);
 
   return (
     <div className="w-full px-4 md:px-8 py-6 ">
@@ -78,7 +78,9 @@ const Myenrollments = () => {
 
       {/* Course Cards */}
       <div className="flex flex-col gap-5">
-        {enrolledcourses.length > 0 ? (
+        {!enrolledcourses ? (
+          <Loading />
+        ) : enrolledcourses.length > 0 ? (
           enrolledcourses.map((item, index) => (
             <div
               key={index}
@@ -123,20 +125,23 @@ const Myenrollments = () => {
                     onClick={() => navigate(`/player/${item._id}`)}
                     className="bg-blue-600 hover:bg-blue-700 transition text-white rounded px-3 py-2 font-bold"
                   >
-                    {progressarray[index] ?
+                    {progressarray[index] ? (
                       `${
                         progressarray[index].lecturecompleted ===
                         progressarray[index].totallectures
                           ? "Completed"
                           : "On Going"
-                      }` : <Loader />}
+                      }`
+                    ) : (
+                      <Loader />
+                    )}
                   </button>
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <Loading />
+          <p className="text-center py-7 text-gray-500">No enrollments available</p>
         )}
       </div>
     </div>

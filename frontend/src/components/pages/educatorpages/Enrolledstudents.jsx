@@ -6,30 +6,32 @@ import { toast } from "react-toastify";
 
 const Enrolledstudents = () => {
   const [enrolledStudents, setenrolledstudents] = useState([]);
-  const {getToken, backendUrl, iseducator} = useContext(appcontext)
+  const { getToken, backendUrl, iseducator } = useContext(appcontext);
 
   const fetchenrolledstudents = async () => {
     try {
-       const token = await getToken()
-       const {data} = await axios.get(`${backendUrl}/educator/getenrolledstudentsdata`, {
-                 headers: { Authorization: `Bearer ${token}` },
-       })
-       if(data.success){
-        setenrolledstudents(data.enrolledStudents.reverse())
-       }else{
-        toast.error(data.message)
-       }
+      const token = await getToken();
+      const { data } = await axios.get(
+        `${backendUrl}/educator/getenrolledstudentsdata`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (data.success) {
+        setenrolledstudents(data.enrolledStudents.reverse());
+      } else {
+        toast.error(data.message);
+      }
     } catch (error) {
-        toast.error(error.message)
+      toast.error(error.message);
     }
   };
 
   useEffect(() => {
-    if(iseducator){
-     fetchenrolledstudents()
+    if (iseducator) {
+      fetchenrolledstudents();
     }
-
-  },[iseducator])
+  }, [iseducator]);
 
   return (
     <div className="w-full h-screen p-5">
@@ -40,49 +42,53 @@ const Enrolledstudents = () => {
         <p className="w-4/12">Course Title</p>
         <p className="w-3/12">Date</p>
       </div>
-      {
-          enrolledStudents.length > 0 ? (
-          enrolledStudents
-            .map((item, index) => (
-              <div
-                key={index}
-                className="flex flex-col sm:flex-row bg-white border-b border-zinc-300   px-4 py-4 gap-2 sm:gap-0"
-              >
-                {/* S No */}
-                <div className="sm:w-1/12">
-                  <p className="font-semibold sm:hidden">S No:</p>
-                  <p>{index + 1}</p>
-                </div>
-      
-                {/* Student */}
-                <div className="sm:w-4/12 flex items-center gap-2">
-                  <img
-                    src={item?.student.imageurl}
-                    alt="student"
-                    className="w-8 h-8 rounded-full object-cover"
-                  />
-                  <div>
-                    <p className="font-semibold sm:hidden">Student Name:</p>
-                    <p className="truncate">{item?.student.name}</p>
-                  </div>
-                </div>
-      
-                {/* Course */}
-                <div className="sm:w-4/12">
-                  <p className="font-semibold sm:hidden">Course Title:</p>
-                  <p className="truncate">{item.courseTitle}</p>
-                </div>
-      
-                {/* Date */}
-                <div className="sm:w-3/12">
-                  <p className="font-semibold sm:hidden">Date:</p>
-                  <p>{new Date(item.purchaseDate).toLocaleDateString()}</p>
-                </div>
-              </div>
-            ))
-        ) : (
+      {!enrolledStudents ? (
+        <div className="w-full h-screen">
           <Loading />
-        )}
+        </div>
+      ) : enrolledStudents.length > 0 ? (
+        enrolledStudents.map((item, index) => (
+          <div
+            key={index}
+            className="flex flex-col sm:flex-row bg-white border-b border-zinc-300   px-4 py-4 gap-2 sm:gap-0"
+          >
+            {/* S No */}
+            <div className="sm:w-1/12">
+              <p className="font-semibold sm:hidden">S No:</p>
+              <p>{index + 1}</p>
+            </div>
+
+            {/* Student */}
+            <div className="sm:w-4/12 flex items-center gap-2">
+              <img
+                src={item?.student.imageurl}
+                alt="student"
+                className="w-8 h-8 rounded-full object-cover"
+              />
+              <div>
+                <p className="font-semibold sm:hidden">Student Name:</p>
+                <p className="truncate">{item?.student.name}</p>
+              </div>
+            </div>
+
+            {/* Course */}
+            <div className="sm:w-4/12">
+              <p className="font-semibold sm:hidden">Course Title:</p>
+              <p className="truncate">{item.courseTitle}</p>
+            </div>
+
+            {/* Date */}
+            <div className="sm:w-3/12">
+              <p className="font-semibold sm:hidden">Date:</p>
+              <p>{new Date(item.purchaseDate).toLocaleDateString()}</p>
+            </div>
+          </div>
+        ))
+      ) : (
+        <div className="text-center py-11 text-gray-500">
+          No enrollments available.
+        </div>
+      )}
     </div>
   );
 };

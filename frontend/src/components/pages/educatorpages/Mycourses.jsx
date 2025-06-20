@@ -43,7 +43,12 @@ const Mycourses = () => {
       </div>
 
       {/* Course list */}
-      {educatorcourses.length > 0 ? educatorcourses.map((item, index) => (
+      {!educatorcourses ? (
+            <div className="w-full h-screen">
+          <Loading />
+        </div>
+      ) :
+      educatorcourses.length > 0 ? educatorcourses.map((item, index) => (
         <div
           key={index}
           className="w-full px-2 py-3 bg-white rounded-md mt-3 flex flex-col md:flex-row md:items-center md:gap-2 shadow-sm"
@@ -82,7 +87,9 @@ const Mycourses = () => {
             <p className="text-sm lg:text-base">{new Date(item.createdAt).toLocaleDateString()}</p>
           </div>
         </div>
-      )) : <div className="w-full h-screen"><Loading /></div>}
+      )) :<div className="text-center py-11 text-gray-500">
+          No courses Available
+        </div>}
     </div>
   );
 };
