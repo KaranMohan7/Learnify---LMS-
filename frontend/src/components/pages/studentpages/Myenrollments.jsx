@@ -18,11 +18,13 @@ const Myenrollments = () => {
     calculatelectureno,
   } = useContext(appcontext);
   const [progressarray, setprogressarray] = useState([]);
+  const [loading,setloading] = useState(true)
 
   const navigate = useNavigate();
   const { user } = useUser();
 
   const getcourseprogress = async () => {
+    setloading(true)
     try {
       const token = await getToken();
       const tempprogress = await Promise.all(
@@ -44,21 +46,38 @@ const Myenrollments = () => {
       );
       setprogressarray(tempprogress);
     } catch (error) {
+         setloading(false)
       toast.error(error.message);
+    }finally {
+    setloading(false); 
+  }
+  };
+
+useEffect(() => {
+  const fetchAllEnrollmentData = async () => {
+    try {
+      if (user) {
+        await getenrolledcourses(); 
+      }
+    } catch (err) {
+      toast.error("Failed to fetch enrolled courses");
     }
   };
 
-  useEffect(() => {
-    if (user) {
-      getenrolledcourses();
-    }
-  }, [user]);
+  fetchAllEnrollmentData();
+}, [user]);
 
-  useEffect(() => {
+ useEffect(() => {
+  const fetchProgress = async () => {
     if (enrolledcourses.length > 0) {
-      getcourseprogress();
+      await getcourseprogress();
+    } else {
+      setloading(false); 
     }
-  }, [enrolledcourses]);
+  };
+
+  fetchProgress();
+}, [enrolledcourses]);
 
   return (
     <div className="w-full px-4 md:px-8 py-6 ">
@@ -78,7 +97,7 @@ const Myenrollments = () => {
 
       {/* Course Cards */}
       <div className="flex flex-col gap-5">
-        {!enrolledcourses ? (
+        {loading ? (
           <Loading />
         ) : enrolledcourses.length > 0 ? (
           enrolledcourses.map((item, index) => (

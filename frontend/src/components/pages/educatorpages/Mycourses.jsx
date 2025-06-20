@@ -7,8 +7,10 @@ import { toast } from "react-toastify";
 const Mycourses = () => {
   const { getToken, backendUrl, currency, iseducator } = useContext(appcontext);
   const [educatorcourses, seteducatorcourses] = useState([]);
+  const [loading, setloading] = useState(true);
 
   const fetchallcourses = async () => {
+    setloading(true)
     try {
        const token = await getToken()
        const {data} = await axios.get(`${backendUrl}/educator/get-courses`, {
@@ -16,11 +18,14 @@ const Mycourses = () => {
        })
        if(data.success){
          seteducatorcourses(data.allcourses)
+         setloading(false)
        }else{
          toast.error(data.message)
+           setloading(false)
        }
     } catch (error) {
        toast.error(error.message)
+         setloading(false)
     }
   };
 
@@ -43,7 +48,7 @@ const Mycourses = () => {
       </div>
 
       {/* Course list */}
-      {!educatorcourses ? (
+      {loading ? (
             <div className="w-full h-screen">
           <Loading />
         </div>

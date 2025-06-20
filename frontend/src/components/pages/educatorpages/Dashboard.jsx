@@ -11,8 +11,10 @@ import { toast } from "react-toastify";
 const Dashboard = () => {
   const { currency, iseducator, backendUrl, getToken } = useContext(appcontext);
   const [dashboarddata, setdashboarddata] = useState({});
+  const [loading,setloading] = useState(true)
 
   const fetchdashboarddata = async () => {
+     setloading(true)
     try {
       const token = await getToken();
       const { data } = await axios.get(
@@ -23,11 +25,14 @@ const Dashboard = () => {
       );
       if (data.success) {
         setdashboarddata(data.dashboardData);
+        setloading(false)
       } else {
         toast.error(data.message);
+         setloading(false)
       }
     } catch (error) {
       toast.error(error.message);
+       setloading(false)
     }
   };
 
@@ -44,7 +49,7 @@ const Dashboard = () => {
           <IoMdPerson size={30} />
           <div>
             <p className="lg:text-xl font-semibold">
-              { !dashboarddata ? <Loader /> : dashboarddata?.totalenrolledstudents?.length  ? dashboarddata?.totalenrolledstudents?.length : 0 }
+              { loading ? <Loader /> : dashboarddata?.totalenrolledstudents?.length  ? dashboarddata?.totalenrolledstudents?.length : 0 }
             </p>
             <p>Total Enrollments</p>
           </div>
@@ -53,7 +58,7 @@ const Dashboard = () => {
           <IoBookSharp size={30} />
           <div>
             <p className="lg:text-xl font-semibold">
-              {!dashboarddata ? <Loader /> :  dashboarddata.totalcourses ? dashboarddata.totalcourses : 0}
+              {loading ? <Loader /> :  dashboarddata.totalcourses ? dashboarddata.totalcourses : 0}
             </p>
             <p>Total Courses</p>
           </div>
@@ -62,7 +67,7 @@ const Dashboard = () => {
           <RiMoneyDollarCircleFill size={30} />
           <div>
             <p className="lg:text-xl font-semibold">
-              {!dashboarddata ? <Loader /> :  currency && dashboarddata.totalEarnings ? (
+              {loading ? <Loader /> :  currency && dashboarddata.totalEarnings ? (
                 <>
                   {currency} {dashboarddata.totalEarnings}
                 </>
@@ -88,7 +93,7 @@ const Dashboard = () => {
         </div>
 
         {/* Data Rows */}
-        {!dashboarddata ? (
+        {loading ? (
           <div className="pl-8 py-24">
             <Loading />
           </div>

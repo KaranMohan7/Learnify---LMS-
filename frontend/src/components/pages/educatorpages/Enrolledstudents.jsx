@@ -7,8 +7,10 @@ import { toast } from "react-toastify";
 const Enrolledstudents = () => {
   const [enrolledStudents, setenrolledstudents] = useState([]);
   const { getToken, backendUrl, iseducator } = useContext(appcontext);
+    const [loading, setloading] = useState(true);
 
   const fetchenrolledstudents = async () => {
+    setloading(true)
     try {
       const token = await getToken();
       const { data } = await axios.get(
@@ -19,11 +21,14 @@ const Enrolledstudents = () => {
       );
       if (data.success) {
         setenrolledstudents(data.enrolledStudents.reverse());
+        setloading(false)
       } else {
         toast.error(data.message);
+        setloading(false)
       }
     } catch (error) {
       toast.error(error.message);
+      setloading(false)
     }
   };
 
@@ -42,7 +47,7 @@ const Enrolledstudents = () => {
         <p className="w-4/12">Course Title</p>
         <p className="w-3/12">Date</p>
       </div>
-      {!enrolledStudents ? (
+      {loading ? (
         <div className="w-full h-screen">
           <Loading />
         </div>
