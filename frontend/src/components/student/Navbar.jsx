@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { assets } from "../../assets/assets/assets";
-import { FaRegCircleUser } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import {
   useClerk,
@@ -71,9 +70,9 @@ const Navbar = () => {
           {user ? null : (
             <button
               onClick={() => openSignIn()}
-              className="block md:hidden lg:hidden"
+              className="block md:hidden lg:hidden px-2 py-1 text-white font-semibold rounded-md bg-blue-800 "
             >
-              <FaRegCircleUser size={30} />
+              Sign In
             </button>
           )}
         </div>
