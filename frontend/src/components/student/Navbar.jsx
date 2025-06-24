@@ -57,15 +57,15 @@ const Navbar = () => {
       <Link to={'/'}>
         <img
           src={assets.logo}
-          className="w-36 md:w-40 lg:w-40 "
+          className="w-30 md:w-40 lg:w-40 "
         />
       </Link>
       <div className="font-semibold flex items-center gap-1 md:gap-3 lg:gap-4">
         <div className=" text-xs md:text-[16px] lg:text-[16px] cursor-pointer">
           {user && (
-            <div className="flex items-center gap-0 md:gap-2 lg:gap-2 ">
-              <p onClick={updateToeducator}>{iseducator ? 'Educator Dashboard |' : 'Become Educator |'}</p>
-              <Link to={'/my-enrollments'}>My Enrollments</Link>
+            <div className="flex items-center gap-0 md:gap-2 lg:gap-2 font-light text-center">
+              <p className="bg-blue-600 border border-zinc-300 px-1 md:px-3 lg:px-3 py-1 rounded-md text-white" onClick={updateToeducator}>{iseducator ? 'Educator Dashboard ' : 'Become Educator '}</p>
+              <Link className="bg-blue-600 border border-zinc-300 px-1 md:px-3 lg:px-3  py-1 rounded-md text-white " to={'/my-enrollments'}>My Enrollments</Link>
             </div>
           ) }
           {user ? null : (
@@ -81,8 +81,8 @@ const Navbar = () => {
            <UserButton appearance={{
             elements: {
               userButtonAvatarBox: {
-                width: "2.3rem",   
-                height: "2.3rem",
+                width: "2.4rem",   
+                height: "2.4rem",
               },
             },
           }}/>

@@ -16,6 +16,7 @@ import Footer from './components/student/Footer'
 import "quill/dist/quill.snow.css";
 import Loading from './components/student/Loading'
 import { ToastContainer } from 'react-toastify'
+import Routeprotector from './components/Protection/Routeprotector'
 
 
 const App = () => {
@@ -32,11 +33,11 @@ const App = () => {
         <Route path='/course-list' element={<Courselist />}></Route>
         <Route path='/course-list/:input' element={<Courselist />}></Route>
         <Route path='/course-details/:id' element={<Coursedetails />} ></Route>
-        <Route path='/my-enrollments' element={<Myenrollments />}></Route>
-        <Route path='/player/:courseId' element={<Player />}></Route>
+        <Route path='/my-enrollments' element={ <Routeprotector><Myenrollments /></Routeprotector>}></Route>
+        <Route path='/player/:courseId' element={<Routeprotector><Player /></Routeprotector>}></Route>
         <Route path='/loading/:path' element={<Loading />}></Route>
                  {/* all the educator routes  */}
-        <Route path='/educator' element={<Educator />} >
+        <Route path='/educator' element={<Routeprotector><Educator /></Routeprotector>} >
         <Route index element={<Dashboard />} />
         <Route path='add-courses' element={<Addcourse />} />
         <Route path='enrolled-students' element={<Enrolledstudents />} />
