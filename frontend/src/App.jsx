@@ -17,6 +17,7 @@ import "quill/dist/quill.snow.css";
 import Loading from './components/student/Loading'
 import { ToastContainer } from 'react-toastify'
 import Routeprotector from './components/Protection/Routeprotector'
+import FalsyPage from './components/FalsyPage'
 
 
 const App = () => {
@@ -43,7 +44,8 @@ const App = () => {
         <Route path='enrolled-students' element={<Enrolledstudents />} />
         <Route path='my-courses' element={<Mycourses />} />
         </Route>
-      </Routes>
+        <Route path='*' element={<FalsyPage />} />
+       </Routes>
       { shownavbar ? null : <Footer />  }
     </div>
   )
