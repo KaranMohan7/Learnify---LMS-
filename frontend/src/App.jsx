@@ -1,24 +1,25 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import { Route, Routes, useMatch } from 'react-router-dom'
-import Home from './components/pages/studentpages/Home'
-import Courselist from './components/pages/studentpages/Courselist'
-import Coursedetails from './components/pages/studentpages/Coursedetails'
-import Myenrollments from './components/pages/studentpages/Myenrollments'
-import Player from './components/pages/studentpages/Player'
-import Educator from './components/pages/educatorpages/Educator'
-import Dashboard from './components/pages/educatorpages/Dashboard'
-import Addcourse from './components/pages/educatorpages/Addcourse'
-import Enrolledstudents from './components/pages/educatorpages/Enrolledstudents'
-import Mycourses from './components/pages/educatorpages/Mycourses'
-import Navbar from './components/student/Navbar'
-import Navbareducator from './components/educator/Navbar'
-import Footer from './components/student/Footer'
 import "quill/dist/quill.snow.css";
-import Loading from './components/student/Loading'
 import { ToastContainer } from 'react-toastify'
 import Routeprotector from './components/Protection/Routeprotector'
-import FalsyPage from './components/FalsyPage'
+import Loading from './components/student/Loading'
+import Footer from './components/student/Footer'
+import Navbareducator from './components/educator/Navbar'
+import Navbar from './components/student/Navbar'
+import Fallbackloading from './Fallbackloading';
 
+const Home = lazy(() => import('./components/pages/studentpages/Home'));
+const Courselist = lazy(() => import('./components/pages/studentpages/Courselist'));
+const Coursedetails = lazy(() => import('./components/pages/studentpages/Coursedetails'));
+const Myenrollments = lazy(() => import('./components/pages/studentpages/Myenrollments'));
+const Player = lazy(() => import('./components/pages/studentpages/Player'));
+const Educator = lazy(() => import('./components/pages/educatorpages/Educator'));
+const Dashboard = lazy(() => import('./components/pages/educatorpages/Dashboard'));
+const Addcourse = lazy(() => import('./components/pages/educatorpages/Addcourse'));
+const Enrolledstudents = lazy(() => import('./components/pages/educatorpages/Enrolledstudents'));
+const Mycourses = lazy(() => import('./components/pages/educatorpages/Mycourses'))
+const FalsyPage = lazy(() => import('./components/FalsyPage'));
 
 const App = () => {
 
@@ -28,6 +29,7 @@ const App = () => {
     <div className='w-full min-h-screen'>
       <ToastContainer />
       { shownavbar ? <Navbareducator /> : <Navbar />  }
+      <Suspense fallback={ <div className='w-full h-screen flex justify-center items-center'><Fallbackloading /></div>}>
       <Routes>
                  {/*  All the student routes */}
         <Route path='/' element={<Home />} ></Route>
@@ -46,6 +48,7 @@ const App = () => {
         </Route>
         <Route path='*' element={<FalsyPage />} />
        </Routes>
+       </Suspense>
       { shownavbar ? null : <Footer />  }
     </div>
   )
