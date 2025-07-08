@@ -49,10 +49,14 @@ const Coursedetails = () => {
     setloading(true)
     try {
       if(!userdata){
-        return toast.warn("Login to enroll!")
+         toast.warn("Login to enroll!")
+         setloading(false)
+         return;
       }
       if(isalreadyenrolled){
-        return toast.warn("Already Enrolled")
+        toast.warn("Already Enrolled")
+        setloading(false)
+        return;
       }
       const token = await getToken()
       const {data} = await axios.post(`${backendUrl}/user/enroll-course`, {id: coursedetails._id} , {
